@@ -290,7 +290,7 @@ extension Module {
   public func print(to path: String) throws {
     var err: UnsafeMutablePointer<Int8>?
     path.withCString { cString in
-      let mutable = strdup(cString)
+      let mutable = strdup(cString)!
       LLVMPrintModuleToFile(llvm, mutable, &err)
       free(mutable)
     }
@@ -324,7 +324,7 @@ extension Module {
   /// - parameter path: The path to write the module's representation to.
   public func emitBitCode(to path: String) throws {
     let status = path.withCString { cString -> Int32 in
-      let mutable = strdup(cString)
+      let mutable = strdup(cString)!
       defer { free(mutable) }
       return LLVMWriteBitcodeToFile(llvm, mutable)
     }
